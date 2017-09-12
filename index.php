@@ -57,8 +57,6 @@ $app->post('/admin/login', function() {
 });
 //Ends the login page routes. 
 
-/*==============================*/
-
 //Logout the admin site route.
 $app->get('/admin/logout', function(){
 
@@ -66,6 +64,53 @@ $app->get('/admin/logout', function(){
 	header("Location: /admin/login");
 	exit;
 
+});
+/*==================================*/
+
+// =========== Starts user CRUD rotes ============= //
+//Start the route user page.
+$app->get("/admin/users", function(){
+
+	User::verifyLogin();
+	$users = User::listAll();
+	$page = new PageAdmin();
+	$page->setTpl("users", array(
+		"users"=>$users
+	));
+
+});
+
+// Criate User.
+$app->get("/admin/users/create", function(){
+
+	User::verifyLogin();
+	$page = new PageAdmin();
+	$page->setTpl("users-create");
+
+});
+
+// Delete User
+$app->get("/admin/users/:iduser/delete", function($iduser){
+	User::verifyLogin();
+});
+
+//Update User.
+$app->get("/admin/users/:iduser", function($iduser){
+
+	User::verifyLogin();
+	$page = new PageAdmin();
+	$page->setTpl("users-update");
+
+});
+
+// Insert User
+$app->post("/admin/users/create", function(){
+	User::verifyLogin();
+});
+
+// To save User
+$app->post("/admin/users/:iduser", function($iduser){
+	User::verifyLogin();
 });
 
 $app->run();
