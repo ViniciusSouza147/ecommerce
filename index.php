@@ -1,5 +1,5 @@
 <?php 
-
+session_start();
 require_once("vendor/autoload.php");
 
 use \Slim\Slim;
@@ -26,6 +26,7 @@ $app->get('/', function() {
 //Starts admin site route.
 $app->get('/admin', function() {
     
+    User::verifyLogin();
     $page = new PageAdmin();
     $page->setTpl("index");
 
@@ -45,16 +46,27 @@ $app->get('/admin/login', function() {
     exit;
 });
 
-//validate login and password.
-$app->get('/admin/login', function() {
+//Method Post - Validate login and password.
+
+$app->post('/admin/login', function() {
 
 	User::login($_POST["login"], $_POST["password"]);
-	header("Locarion: /admin");
+	header("Location:/admin");
 	exit;
 
 });
 //Ends the login page routes. 
+
 /*==============================*/
+
+//Logout the admin site route.
+$app->get('/admin/logout', function(){
+
+	User::logout();
+	header("Location: /admin/login");
+	exit;
+
+});
 
 $app->run();
 

@@ -5,17 +5,39 @@
 	class Model{
 
 		private $values = [];
-		
+
 		public function __call($name, $args){
 
 			$method = substr($name, 0, 3);
-			$fieldname = substr($name, 3, strlen($name));
+			$fieldName = substr($name, 3, strlen($name));
 
-			var_dump($method, $fieldname);
-			exit;
+			switch ($method) {
+
+				case 'get':
+					$this->values[$fieldName];
+				break;				
+				case 'set':
+					$this->values[$fieldName] = $args[0];
+				break;	
+				
+			}
+		}
+
+		public function setData($data = array()){
+
+			foreach ($data as $key => $value) {
+				
+				$this->{"set".$key}($value);
+
+			}
 
 		}
 
+		public function getValues(){
+
+			return $this->values;
+
+		}
 	}
 
  ?>
