@@ -16,10 +16,10 @@
 		{
 			
 			$config = array(
-				"tpl_dir"   	=> $_SERVER["DOCUMENT_ROOT"]."/views/email",
+				"tpl_dir"   	=> $_SERVER["DOCUMENT_ROOT"]."/views/email/",
 				"cache_dir" 	=> $_SERVER["DOCUMENT_ROOT"]."/views-cache/",
 				"debug"     	=> false // set to false to improve the speed
-			 );
+			);
 
 			Tpl::configure( $config );
 			$tpl = new Tpl;
@@ -36,14 +36,20 @@
 			 * example to see how to use XOAUTH2.
 			 * The IMAP section shows how to save this message to the 'Sent Mail' folder using IMAP commands.
 			 */
-			//Import PHPMailer classes into the global namespace
-			use PHPMailer\PHPMailer\PHPMailer;
 			
 			//Create a new PHPMailer instance
 			$this->mail = new \PHPMailer;
 
 			//Tell PHPMailer to use SMTP
 			$this->mail->isSMTP();
+
+			$this->mail->SMTPOptions = array(
+				'ssl' => array(
+					'verify_peer' => false,
+					'verify_peer_name' => false,
+					'allow_self_signed' = true
+				)
+			)
 
 			//Enable SMTP debugging
 			// 0 = off (for production use)
@@ -122,7 +128,7 @@
 			    imap_close($imapStream);
 
 			    return $result;
-			}*/
+			}
 
 		}
 
